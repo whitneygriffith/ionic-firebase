@@ -24743,6 +24743,22 @@ ion-navbar.toolbar {
   }
 }
 
+page-event-detail ion-card-header {
+  text-align: center;
+}
+
+page-event-detail .add-guest-form button {
+  margin-top: 16px;
+}
+
+page-event-detail .profitable {
+  color: #22BB22;
+}
+
+page-event-detail .no-profit {
+  color: #FF0000;
+}
+
 page-login {
   margin-bottom: 32px;
 }

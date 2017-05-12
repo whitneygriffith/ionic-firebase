@@ -1,26 +1,24 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the EventDetailPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { EventProvider } from '../../providers/event/event';
 @IonicPage({
-	name: 'event-detail'
+name: 'event-detail',
+segment: 'event-detail/:eventId'
 })
 @Component({
-  selector: 'page-event-detail',
-  templateUrl: 'event-detail.html',
+selector: 'page-event-detail',
+templateUrl: 'event-detail.html',
 })
 export class EventDetailPage {
+public currentEvent: any;
+constructor(public navCtrl: NavController, public navParams: NavParams,
+public eventProvider: EventProvider) {}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventDetailPage');
-  }
+ionViewDidEnter(){
+this.eventProvider.getEventDetail(this.navParams.get('eventId'))
+.then( eventSnap => {
+this.currentEvent = eventSnap;
+});
+}
 
 }

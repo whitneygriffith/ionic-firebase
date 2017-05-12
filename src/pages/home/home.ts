@@ -15,4 +15,6 @@ goToProfile(){
 this.navCtrl.push('profile');
 }
 
+goToCreate(){ this.navCtrl.push('event-create'); }
+goToList(){ this.navCtrl.push('event-list'); }
 }

@@ -24743,6 +24743,11 @@ ion-navbar.toolbar {
   }
 }
 
+page-event-create ion-item {
+  padding: 0;
+  margin-bottom: 16px;
+}
+
 page-event-detail ion-card-header {
   text-align: center;
 }
@@ -24757,6 +24762,10 @@ page-event-detail .profitable {
 
 page-event-detail .no-profit {
   color: #FF0000;
+}
+
+page-home ion-content button {
+  margin-bottom: 32px;
 }
 
 page-login {

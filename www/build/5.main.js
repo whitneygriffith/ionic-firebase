@@ -1,14 +1,14 @@
 webpackJsonp([5],{
 
-/***/ 268:
+/***/ 275:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profile__ = __webpack_require__(269);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePageModule", function() { return ProfilePageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__event_detail__ = __webpack_require__(283);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventDetailPageModule", function() { return EventDetailPageModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,38 +18,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ProfilePageModule = (function () {
-    function ProfilePageModule() {
+var EventDetailPageModule = (function () {
+    function EventDetailPageModule() {
     }
-    return ProfilePageModule;
+    return EventDetailPageModule;
 }());
-ProfilePageModule = __decorate([
+EventDetailPageModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* NgModule */])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__profile__["a" /* ProfilePage */],
+            __WEBPACK_IMPORTED_MODULE_2__event_detail__["a" /* EventDetailPage */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__profile__["a" /* ProfilePage */]),
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__event_detail__["a" /* EventDetailPage */]),
         ],
         exports: [
-            __WEBPACK_IMPORTED_MODULE_2__profile__["a" /* ProfilePage */]
+            __WEBPACK_IMPORTED_MODULE_2__event_detail__["a" /* EventDetailPage */]
         ]
     })
-], ProfilePageModule);
+], EventDetailPageModule);
 
-//# sourceMappingURL=profile.module.js.map
+//# sourceMappingURL=event-detail.module.js.map
 
 /***/ }),
 
-/***/ 269:
+/***/ 283:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_profile_profile__ = __webpack_require__(278);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_auth_auth__ = __webpack_require__(274);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_event_event__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(205);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventDetailPage; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -63,129 +63,60 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ProfilePage = (function () {
-    function ProfilePage(navCtrl, alertCtrl, profileProvider, authProvider) {
+var EventDetailPage = (function () {
+    function EventDetailPage(navCtrl, navParams, eventProvider, cameraPlugin) {
         this.navCtrl = navCtrl;
-        this.alertCtrl = alertCtrl;
-        this.profileProvider = profileProvider;
-        this.authProvider = authProvider;
+        this.navParams = navParams;
+        this.eventProvider = eventProvider;
+        this.cameraPlugin = cameraPlugin;
+        this.guestName = '';
+        this.guestPicture = null;
     }
-    ProfilePage.prototype.ionViewDidEnter = function () {
+    EventDetailPage.prototype.ionViewDidEnter = function () {
         var _this = this;
-        this.profileProvider.getUserProfile().then(function (profileSnap) {
-            _this.userProfile = profileSnap;
-            _this.birthDate = _this.userProfile.birthDate;
+        this.eventProvider.getEventDetail(this.navParams.get('eventId')).then(function (eventSnap) {
+            _this.currentEvent = eventSnap;
         });
     };
-    ProfilePage.prototype.logOut = function () {
+    EventDetailPage.prototype.addGuest = function (guestName) {
         var _this = this;
-        this.authProvider.logoutUser().then(function () {
-            _this.navCtrl.setRoot('login');
+        this.eventProvider.addGuest(guestName, this.currentEvent.id, this.currentEvent.price, this.guestPicture).then(function () {
+            _this.guestName = '';
+            _this.guestPicture = null;
         });
     };
-    ProfilePage.prototype.updateName = function () {
+    EventDetailPage.prototype.takePicture = function () {
         var _this = this;
-        var alert = this.alertCtrl.create({
-            message: "Your first name & last name",
-            inputs: [
-                {
-                    name: 'firstName',
-                    placeholder: 'Your first name',
-                    value: this.userProfile.firstName
-                },
-                {
-                    name: 'lastName',
-                    placeholder: 'Your last name',
-                    value: this.userProfile.lastName
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                },
-                {
-                    text: 'Save',
-                    handler: function (data) {
-                        _this.profileProvider.updateName(data.firstName, data.lastName);
-                    }
-                }
-            ]
+        this.cameraPlugin.getPicture({
+            quality: 95,
+            destinationType: this.cameraPlugin.DestinationType.DATA_URL,
+            sourceType: this.cameraPlugin.PictureSourceType.CAMERA,
+            allowEdit: true,
+            encodingType: this.cameraPlugin.EncodingType.PNG,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: true
+        }).then(function (imageData) {
+            _this.guestPicture = imageData;
+        }, function (error) {
+            console.log("ERROR -> " + JSON.stringify(error));
         });
-        alert.present();
     };
-    ProfilePage.prototype.updateDOB = function (birthDate) {
-        this.profileProvider.updateDOB(birthDate);
-    };
-    ProfilePage.prototype.updateEmail = function () {
-        var _this = this;
-        var alert = this.alertCtrl.create({
-            inputs: [
-                {
-                    name: 'newEmail',
-                    placeholder: 'Your new email',
-                },
-                {
-                    name: 'password',
-                    placeholder: 'Your password',
-                    type: 'password'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                },
-                {
-                    text: 'Save',
-                    handler: function (data) {
-                        _this.profileProvider.updateEmail(data.newEmail, data.password);
-                    }
-                }
-            ]
-        });
-        alert.present();
-    };
-    ProfilePage.prototype.updatePassword = function () {
-        var _this = this;
-        var alert = this.alertCtrl.create({
-            inputs: [
-                {
-                    name: 'newPassword',
-                    placeholder: 'Your new password',
-                    type: 'password'
-                },
-                {
-                    name: 'oldPassword',
-                    placeholder: 'Your old password',
-                    type: 'password'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                },
-                {
-                    text: 'Save',
-                    handler: function (data) {
-                        _this.profileProvider.updatePassword(data.newPassword, data.oldPassword);
-                    }
-                }
-            ]
-        });
-        alert.present();
-    };
-    return ProfilePage;
+    return EventDetailPage;
 }());
-ProfilePage = __decorate([
+EventDetailPage = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPage */])({
-        name: 'profile'
+        name: 'event-detail',
+        segment: 'event-detail/:eventId'
     }),
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
-        selector: 'page-profile',template:/*ion-inline-start:"C:\Users\wg13w\desktop\test\src\pages\profile\profile.html"*/'<ion-header>\n<ion-navbar color="primary">\n<ion-title>Profile</ion-title>\n<ion-buttons end>\n<button ion-button icon-only (click)="logOut()">\n<ion-icon name="log-out"></ion-icon>\n</button>\n</ion-buttons>\n</ion-navbar>\n</ion-header>\n<ion-content padding>\n<ion-list>\n<ion-list-header>\nPersonal Information\n</ion-list-header>\n<ion-item (click)="updateName()">\n<ion-grid>\n<ion-row>\n<ion-col col-6>\nName\n</ion-col>\n<ion-col col-6 *ngIf="userProfile?.firstName ||\nuserProfile?.lastName">\n{{userProfile?.firstName}} {{userProfile?.lastName}}\n</ion-col>\n<ion-col col-6 class="placeholder-profile"\n*ngIf="!userProfile?.firstName">\n<span>\nTap here to edit.\n</span>\n</ion-col>\n</ion-row>\n</ion-grid>\n</ion-item>\n<ion-item>\n<ion-label class="dob-label">Date of Birth</ion-label>\n<ion-datetime displayFormat="MMM D, YYYY" pickerFormat="D MMM YYYY"\n[(ngModel)]="birthDate"\n(ionChange)="updateDOB(birthDate)"></ion-datetime>\n</ion-item>\n<ion-item (click)="updateEmail()">\n<ion-grid>\n<ion-row>\n<ion-col col-6>\nEmail\n</ion-col>\n<ion-col col-6 *ngIf="userProfile?.email">\n{{userProfile?.email}}\n</ion-col>\n<ion-col col-6 class="placeholder-profile"\n*ngIf="!userProfile?.email">\n<span>\nTap here to edit.\n</span>\n</ion-col>\n</ion-row>\n</ion-grid>\n</ion-item>\n<ion-item (click)="updatePassword()">\n<ion-grid>\n<ion-row>\n<ion-col col-6>\nPassword\n</ion-col>\n<ion-col col-6 class="placeholder-profile">\n<span>\nTap here to edit.\n</span>\n</ion-col>\n</ion-row>\n</ion-grid>\n</ion-item>\n</ion-list>\n</ion-content>'/*ion-inline-end:"C:\Users\wg13w\desktop\test\src\pages\profile\profile.html"*/,
+        selector: 'page-event-detail',template:/*ion-inline-start:"C:\Users\wg13w\desktop\test\src\pages\event-detail\event-detail.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title></ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n  <ion-row padding>\n\n    <ion-col col-8>\n\n      Current Revenue\n\n    </ion-col>\n\n    <ion-col col-4 [class.profitable]="currentEvent?.revenue > 0"\n\n      [class.no-profit]="currentEvent?.revenue < 0">\n\n      {{currentEvent?.revenue}}\n\n    </ion-col>\n\n  </ion-row>\n\n  <ion-card>\n\n    <ion-card-header>\n\n      {{currentEvent?.name}}\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <p>Ticket: <strong>${{currentEvent?.price}}</strong></p>\n\n      <p>Date: <strong>{{currentEvent?.date}}</strong></p>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n  <ion-card class="add-guest-form">\n\n    <ion-card-header>\n\n      Add Guests\n\n    </ion-card-header>\n\n    <ion-card-content>\n\n      <ion-list no-lines>\n\n        <ion-item>\n\n          <ion-label stacked>Name</ion-label>\n\n          <ion-input [(ngModel)]="guestName" type="text"\n\n            placeholder="What\'s your guest\'s name?"></ion-input>\n\n        </ion-item>\n\n        <span *ngIf="guestPicture">Picture taken!</span>\n\n\n\n        <button ion-button color="primary" block (click)="takePicture()">\n\n          Take a Picture\n\n        </button>\n\n\n\n        <button ion-button color="primary" block (click)="addGuest(guestName)">\n\n          Add Guest\n\n        </button>\n\n      </ion-list>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n</ion-content>'/*ion-inline-end:"C:\Users\wg13w\desktop\test\src\pages\event-detail\event-detail.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2__providers_profile_profile__["a" /* ProfileProvider */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_auth__["a" /* AuthProvider */]])
-], ProfilePage);
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_event_event__["a" /* EventProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_event_event__["a" /* EventProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object])
+], EventDetailPage);
 
-//# sourceMappingURL=profile.js.map
+var _a, _b, _c, _d;
+//# sourceMappingURL=event-detail.js.map
 
 /***/ })
 
